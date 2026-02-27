@@ -4,5 +4,5 @@
 
 void element_print(Element element)
 {
-    printf("%d ", element);
+    printf("%d", element);
 }
