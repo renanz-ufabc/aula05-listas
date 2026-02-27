@@ -25,15 +25,15 @@ int main(void)
     list_removeLast(list);
     SHOW_LIST(list);
 
-    list_insertAt(list, 8, 88);
-    SHOW_LIST(list);
-    list_remove(list, 8);
-    SHOW_LIST(list);
+    //list_insertAt(list, 8, 88);
+    //SHOW_LIST(list);
+    //list_remove(list, 8);
+    //SHOW_LIST(list);
 
-    list_set(list, 2, 22);
-    SHOW_LIST(list);
-    element_print(list_get(list, 2));
-    printf("\n");
+    //list_set(list, 2, 22);
+    //SHOW_LIST(list);
+    //element_print(list_get(list, 2));
+    //printf("\n");
 
     list_destroy(list);
 
