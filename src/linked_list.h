@@ -29,6 +29,7 @@ void list_moveToStart(List * list, size_t index);
 void list_moveToEnd(List * list, size_t index);
 
 void list_print(List * list);
+void list_printHead(List * list);
 
 
 #endif

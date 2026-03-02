@@ -88,11 +88,25 @@ void list_insertAtEnd(List * list, Element element)
 
 void list_removeFirst(List * list)
 {
-    // ...
+    if (list_isEmpty(list)) { list_error("List already empty"); return; }
+
+    Node * trash = list->sentinel->next;
+    list->sentinel->next = list->sentinel->next->next;
+    list->sentinel->next->prev = list->sentinel;
+    free(trash);
+
+    list->size--;
 }
 void list_removeLast(List * list)
 {
-    // ...
+    if (list_isEmpty(list)) { list_error("List already empty"); return; }
+
+    Node * trash = list->sentinel->prev;
+    list->sentinel->prev = list->sentinel->prev->prev;
+    list->sentinel->prev->next = list->sentinel;
+    free(trash);
+
+    list->size--;
 }
 
 void list_print(List * list)

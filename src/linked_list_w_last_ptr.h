@@ -29,6 +29,9 @@ void list_moveToStart(List * list, size_t index);
 void list_moveToEnd(List * list, size_t index);
 
 void list_print(List * list);
+void list_printFirst(List * list);
+void list_printLast(List * list);
+void list_printFirstAndLast(List * list);
 
 
 #endif

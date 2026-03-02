@@ -156,11 +156,35 @@ void list_moveToStart(List * list, size_t index)
     Node * prev = list->head;
     for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
 
-    // ...
+    Node * moving = prev->next;
+    prev->next = prev->next->next;
+    moving->next = list->head;
+    list->head = moving;
 }
 void list_moveToEnd(List * list, size_t index)
 {
-    // ...
+    if (index == list->size - 1) { return; }
+    if (index < 0 || index >= list->size) { list_error("Invalid index to move"); return; }
+
+    Node * last = list->head;
+    while (last->next != NULL) { last = last->next; }
+
+    if (index == 0)
+    {
+        Node * moving = list->head;
+        list->head = list->head->next;
+        moving->next = NULL;
+        last->next = moving;
+        return;
+    }
+
+    Node * prev = list->head;
+    for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
+
+    Node * moving = prev->next;
+    prev->next = prev->next->next;
+    moving->next = NULL;
+    last->next = moving;
 }
 
 void list_print(List * list)
@@ -175,4 +199,9 @@ void list_print(List * list)
         curr = curr->next;
     }
     printf(" ], size = %zu", list_getSize(list));
+}
+void list_printHead(List * list)
+{
+    if (list->head == NULL) { return; }
+    element_print(list->head->element);
 }

@@ -104,6 +104,7 @@ void list_insertAt(List * list, size_t index, Element element)
 {
     if (index == 0) { list_insertAtStart(list, element); return; }
     if (index > list->size) { list_error("Invalid index to insert"); return; }
+    if (index == list->size) { list_insertAtEnd(list, element); return; }
 
     Node * prev = list->first;
     for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
@@ -113,15 +114,17 @@ void list_insertAt(List * list, size_t index, Element element)
     newNode->next = prev->next;
     prev->next = newNode;
 
+
     list->size++;
 }
 
 void list_removeFirst(List * list)
 {
     if (list_isEmpty(list)) { list_error("List already empty"); return; }
-
+    
     Node * trash = list->first;
     list->first = list->first->next;
+    if (list->size == 1) { list->last = NULL; }
     free(trash);
 
     list->size--;
@@ -136,6 +139,7 @@ void list_removeLast(List * list)
 
     free(secondToLast->next);
     secondToLast->next = NULL;
+    list->last = secondToLast;
 
     list->size--;
 }
@@ -143,6 +147,7 @@ void list_remove(List * list, size_t index)
 {
     if (index == 0) { list_removeFirst(list); return; }
     if (index >= list->size) { list_error("Invalid index to remove"); return; }
+    if (index == list->size - 1) { list_removeLast(list); return; }
 
     Node * prev = list->first;
     for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
@@ -162,11 +167,35 @@ void list_moveToStart(List * list, size_t index)
     Node * prev = list->first;
     for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
 
-    // ...
+    if (index == list->size - 1) { list->last = prev; }
+    Node * moving = prev->next;
+    prev->next = prev->next->next;
+    moving->next = list->first;
+    list->first = moving;
 }
 void list_moveToEnd(List * list, size_t index)
 {
-    // ...
+    if (index == list->size - 1) { return; }
+    if (index < 0 || index >= list->size) { list_error("Invalid index to move"); return; }
+
+    if (index == 0)
+    {
+        Node * moving = list->first;
+        list->first = list->first->next;
+        moving->next = NULL;
+        list->last->next = moving;
+        list->last = moving;
+        return;
+    }
+
+    Node * prev = list->first;
+    for (size_t i = 0; i < index - 1; i++) { prev = prev->next; }
+
+    Node * moving = prev->next;
+    prev->next = prev->next->next;
+    moving->next = NULL;
+    list->last->next = moving;
+    list->last = moving;
 }
 
 void list_print(List * list)
@@ -181,4 +210,22 @@ void list_print(List * list)
         curr = curr->next;
     }
     printf(" ], size = %zu", list_getSize(list));
+}
+void list_printFirst(List * list)
+{
+    if (list->first == NULL) { return; }
+    element_print(list->first->element);
+}
+void list_printLast(List * list)
+{
+    if (list->last == NULL) { return; }
+    element_print(list->last->element);
+}
+void list_printFirstAndLast(List * list)
+{
+    printf("(");
+    list_printFirst(list);
+    printf(", ");
+    list_printLast(list);
+    printf(")\n");
 }
